@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  telegram_bot:
+    build:
+      context: ./telegramBotImages
+      dockerfile: Dockerfile
+    environment:
+      - PYTHON_HOST=image_processing:${PYTHON_PORT}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - NODE_ENV=development
+  image_processing:
+    build:
+      context: ./imageProcessingServer
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${PYTHON_PORT}
+    ports:
+      - "${PYTHON_PORT}:${PYTHON_PORT}"
