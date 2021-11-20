@@ -3,14 +3,15 @@ import knex from '../../libs/db';
 import {loggerDevelopment, loggerProduction} from "../../libs/logger";
 
 export class UserStorageManager implements IUserStorageManager {
-    async getByChatId(chatId: string): Promise<User> {
+    async getByChatId(chatId: string): Promise<User | false> {
         const user: User = await knex('users').where({chatId}).first()
         if (user) {
             loggerDevelopment.silly(`Load info about ${chatId}`)
+            return user;
         } else {
             loggerDevelopment.silly(`Unsuccessful load info about ${chatId}`)
+            return false;
         }
-        return user;
     }
 
     async updateByChatId(chatId: string, options: UserOptions): Promise<void> {

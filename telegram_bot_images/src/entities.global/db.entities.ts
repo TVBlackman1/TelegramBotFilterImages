@@ -11,7 +11,7 @@ type User = UserOptions & {
 }
 
 interface IUserStorageManager {
-    getByChatId(chatId: string): Promise<User>;
+    getByChatId(chatId: string): Promise<User | false>;
     updateByChatId(chatId: string, options: UserOptions): Promise<void>
     addUser(user: User): Promise<void>
 }
