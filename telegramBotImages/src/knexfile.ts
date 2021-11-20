@@ -1,4 +1,5 @@
-import config from 'src/config'
+require('ts-node/register');
+import config from './config'
 
 export default {
     client: 'mysql',
@@ -7,11 +8,12 @@ export default {
         user: config.db.user,
         password: config.db.password,
         charset: 'utf8',
-        database: 'telegram-bot',
+        database: 'telegram_bot',
         supportBigNumbers: true,
+        port: config.db.port
     },
     pool: { min: 0, max: 16 },
     migrations: {
-        directory: __dirname + 'sql/migrations',
+        directory: __dirname + '/sql/migrations',
     },
 }

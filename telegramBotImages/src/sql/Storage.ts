@@ -1,8 +1,8 @@
-import {IStorage, IUser} from "../entities.global/db.entities";
+import {IStorage, IUserStorageManager} from "../entities.global/db.entities";
 
 export class Storage implements IStorage {
-    public readonly user: IUser;
-    constructor(_user: IUser,) {
+    public readonly user: IUserStorageManager;
+    constructor(_user: IUserStorageManager,) {
         this.user = _user
     }
 }
