@@ -1,15 +1,10 @@
 import config from 'src/config'
 
 import {ImageProcessingBot} from 'src/libs/telegramBot'
-import {UserStorageManager} from "./sql/user/User";
-import {User} from "./entities.global/db.entities";
+import storageManager from "./sql/storageManager";
 
-let userStorageManager = new UserStorageManager();
-
-let user: User = {
-    chatId: '1234',
-    state: 'start',
-}
-userStorageManager.addUser(user)
+storageManager.user.addUser({
+    chatId: '12'
+})
 
 ImageProcessingBot.createInstance(config.telegram.token)

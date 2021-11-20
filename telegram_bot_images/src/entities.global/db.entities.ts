@@ -1,10 +1,12 @@
+type UserState = 'start' | 'pick';
+
 type UserOptions = {
-    state?: string,
+    state?: UserState,
     imageSource?: string,
     imageResult?: string,
 }
 
-type User = UserOptions | {
+type User = UserOptions & {
     chatId: string,
 }
 
@@ -14,7 +16,7 @@ interface IUserStorageManager {
     addUser(user: User): Promise<void>
 }
 
-interface IStorage {
+interface IStorageManager {
     user: IUserStorageManager
 }
 
@@ -22,5 +24,5 @@ export {
     UserOptions,
     User,
     IUserStorageManager,
-    IStorage
+    IStorageManager
 }

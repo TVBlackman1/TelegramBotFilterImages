@@ -33,6 +33,23 @@ class LocalTelegramBot {
     }
 
     private setListeners(): void {
+        this.bot.onText(/\/start/, async (msg, match) => {
+            const chatId = msg.chat.id;
+            loggerProduction.info(`Request from chat:${chatId}`)
+
+            const lastIndex = msg.photo.length - 1
+            const fileId = msg.photo[lastIndex].file_id
+            const stream = this.bot.getFileStream(fileId)
+            let buff = await stream2buffer(stream);
+            let newBuff = await process(buff)
+
+            if (!newBuff) {
+                this.bot.sendMessage(chatId, 'Server error. Try again later')
+            } else {
+                this.bot.sendPhoto(chatId, newBuff)
+            }
+        })
+
         this.bot.on('photo', async (msg, match) => {
             const chatId = msg.chat.id;
             loggerProduction.info(`Request from chat:${chatId}`)

@@ -1,7 +1,8 @@
 const replies = {
     bot: {
-        serverError: 'Server error. Try again later',
+        serverError: 'Server error. Try again later.',
         photoTextMessage: 'Its your filtered image',
+        start: 'Hello! Send me photo and get pretty result!'
     },
     user: {
         pickFilter: {

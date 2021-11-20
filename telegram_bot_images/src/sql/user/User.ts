@@ -1,6 +1,6 @@
 import {IUserStorageManager, User, UserOptions} from "../../entities.global/db.entities";
 import knex from '../../libs/db';
-import {loggerDevelopment} from "../../libs/logger";
+import {loggerDevelopment, loggerProduction} from "../../libs/logger";
 
 export class UserStorageManager implements IUserStorageManager {
     async getByChatId(chatId: string): Promise<User> {
@@ -19,7 +19,12 @@ export class UserStorageManager implements IUserStorageManager {
     }
 
     async addUser(user: User): Promise<void> {
-        await knex('users').insert({...user})
+        try {
+            await knex('users').insert({...user})
+            loggerDevelopment.silly(`Added user ${user.chatId}`)
+        } catch (e) {
+            loggerProduction.error(e.message)
+        }
         return;
     }
 }
