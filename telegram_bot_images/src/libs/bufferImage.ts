@@ -1,4 +1,5 @@
 import {Stream} from "stream";
+import * as fs from "fs";
 
 export async function stream2buffer(stream: Stream): Promise<Buffer> {
 
@@ -11,4 +12,8 @@ export async function stream2buffer(stream: Stream): Promise<Buffer> {
         stream.on("error", err => reject(`error converting stream - ${err}`));
 
     });
+}
+
+export async function buffer2file(path: string, buffer: Buffer) {
+    fs.createWriteStream(path).write(buffer);
 }

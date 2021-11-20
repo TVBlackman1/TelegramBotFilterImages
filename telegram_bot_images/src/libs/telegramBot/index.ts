@@ -5,6 +5,7 @@ import {process} from 'src/libs/imageProcessing'
 import Sender from "src/libs/Sender";
 import storageManager from "src/sql/storageManager";
 import {RequestHandler} from "../../RequestHandler";
+import {PhotoSize} from "node-telegram-bot-api";
 
 
 class LocalTelegramBot {
@@ -40,6 +41,13 @@ class LocalTelegramBot {
         loggerProduction.info('Bot is listening');
     }
 
+    private async getImage(photo: Array<PhotoSize>): Promise<Buffer> {
+        const lastIndex = photo.length - 1
+        const fileId = photo[lastIndex].file_id
+        const stream = this.bot.getFileStream(fileId)
+        return await stream2buffer(stream);
+    }
+
     private setListeners(): void {
         this.bot.onText(/\/start/, this.requestHandler.onStart.bind(this.requestHandler))
 
@@ -49,17 +57,15 @@ class LocalTelegramBot {
             const chatId = msg.chat.id;
             loggerProduction.info(`Request from chat:${chatId}`);
 
-            const lastIndex = msg.photo.length - 1
-            const fileId = msg.photo[lastIndex].file_id
-            const stream = this.bot.getFileStream(fileId)
-            let buff = await stream2buffer(stream);
-            let newBuff = await process(buff)
+            const imageBuffer = await this.getImage(msg.photo);
+            await this.requestHandler.onPhoto(msg, match, imageBuffer)
+            // let newBuff = await process(buff)
 
-            if (!newBuff) {
-                this.bot.sendMessage(chatId, 'Server error. Try again later')
-            } else {
-                this.bot.sendPhoto(chatId, newBuff)
-            }
+            // if (!newBuff) {
+            //     this.bot.sendMessage(chatId, 'Server error. Try again later')
+            // } else {
+            //     this.bot.sendPhoto(chatId, newBuff)
+            // }
         })
     }
 }

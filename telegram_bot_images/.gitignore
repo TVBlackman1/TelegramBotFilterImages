@@ -4,3 +4,4 @@ node_modules
 *.map
 .env
 .DS_Store
+src/public/*
