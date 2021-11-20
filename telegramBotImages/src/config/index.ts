@@ -15,5 +15,10 @@ export default {
         imageProcessing: {
             process: '/api/process'
         }
+    },
+    db: {
+        user: process.env.MYSQL_USER || 'root',
+        password: process.env.MYSQL_PASS || 'root',
+        host: process.env.MYSQL_HOST || 'http://localhost:3306',
     }
 }

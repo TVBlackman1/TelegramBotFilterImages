@@ -8,6 +8,10 @@ services:
       - PYTHON_HOST=image_processing:${PYTHON_PORT}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
       - NODE_ENV=development
+      - MYSQL_PASS=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_HOST=db:${MYSQL_PORT}
+    depends_on:
+      - db
   image_processing:
     build:
       context: ./imageProcessingServer
@@ -16,3 +20,9 @@ services:
       - PORT=${PYTHON_PORT}
     ports:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"

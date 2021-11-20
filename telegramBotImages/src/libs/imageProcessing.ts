@@ -2,7 +2,7 @@ import * as needle from "needle";
 import config from 'src/config'
 import {loggerProduction} from "./logger";
 
-export async function process(imageBuff: Buffer): Promise<Buffer | undefined> {
+export async function process(imageBuff: Buffer): Promise<Buffer | false> {
     const host = config.urn.imageProcessing;
     const api = config.uri.imageProcessing.process;
     const url = host + api;
@@ -18,12 +18,12 @@ export async function process(imageBuff: Buffer): Promise<Buffer | undefined> {
         res = await needle('post', url, data, options)
     } catch (e) {
         loggerProduction.error(e)
-        return undefined
+        return false
     }
-    let arr = res.body.image
-    if (arr === undefined) {
+    let byteArray = res.body.image
+    if (!byteArray) {
         loggerProduction.warn('Not correctly answer')
-        return undefined
+        return false
     }
-    return Buffer.from(arr)
+    return Buffer.from(byteArray)
 }

@@ -5,10 +5,10 @@ import {process} from 'src/libs/imageProcessing'
 
 
 class LocalTelegramBot {
-    private static instance: LocalTelegramBot = undefined
+    private static instance: LocalTelegramBot;
 
     static getInstance() {
-        if (this.instance === undefined) {
+        if (!this.instance) {
             throw new Error("Instance is not defined")
         }
         return this.instance
@@ -34,16 +34,16 @@ class LocalTelegramBot {
 
     private setListeners(): void {
         this.bot.on('photo', async (msg, match) => {
-            loggerProduction.info('Request from chatId')
             const chatId = msg.chat.id;
+            loggerProduction.info(`Request from chat:${chatId}`)
 
-            const lastInd = msg.photo.length - 1
-            const fileId = msg.photo[lastInd].file_id
+            const lastIndex = msg.photo.length - 1
+            const fileId = msg.photo[lastIndex].file_id
             const stream = this.bot.getFileStream(fileId)
             let buff = await stream2buffer(stream);
             let newBuff = await process(buff)
 
-            if (newBuff === undefined) {
+            if (!newBuff) {
                 this.bot.sendMessage(chatId, 'Server error. Try again later')
             } else {
                 this.bot.sendPhoto(chatId, newBuff)
