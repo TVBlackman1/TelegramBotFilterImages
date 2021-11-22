@@ -1,7 +1,6 @@
 import * as TelegramBot from 'node-telegram-bot-api'
 import {loggerDevelopment, loggerProduction} from "src/libs/logger";
 import {stream2buffer} from "../bufferImage";
-import {process} from 'src/libs/imageProcessing'
 import Sender from "src/libs/Sender";
 import storageManager from "src/sql/storageManager";
 import {RequestHandler} from "../../RequestHandler";
@@ -53,19 +52,14 @@ class LocalTelegramBot {
 
         this.bot.onText(/\/filter/, this.requestHandler.onFilter.bind(this.requestHandler))
 
+        this.bot.on('message', this.requestHandler.onKeyboardDown.bind(this.requestHandler))
+
         this.bot.on('photo', async (msg, match) => {
             const chatId = msg.chat.id;
             loggerProduction.info(`Request from chat:${chatId}`);
 
             const imageBuffer = await this.getImage(msg.photo);
             await this.requestHandler.onPhoto(msg, match, imageBuffer)
-            // let newBuff = await process(buff)
-
-            // if (!newBuff) {
-            //     this.bot.sendMessage(chatId, 'Server error. Try again later')
-            // } else {
-            //     this.bot.sendPhoto(chatId, newBuff)
-            // }
         })
     }
 }

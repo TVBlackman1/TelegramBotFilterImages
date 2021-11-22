@@ -22,21 +22,14 @@ export default class Sender {
         await this.bot.sendMessage(chatId, text)
     }
 
-    public async sendError(chatId: string) {
+    public async sendServerError(chatId: string) {
         const text: string = replies.bot.serverError;
         await this.bot.sendMessage(chatId, text)
     }
 
-    public async sendFilterList(chatId: string) {
-        // TODO
-        const text: string = replies.bot.serverError;
-        await this.bot.sendMessage(chatId, text)
-    }
-
-    public async sendPhoto(chatId: string) {
-        // TODO
+    public async sendPhoto(chatId: string, imageBuffer: Buffer) {
         const text: string = replies.bot.photoTextMessage;
-        await this.bot.sendPhoto(chatId, text, {caption: text});
+        await this.bot.sendPhoto(chatId, imageBuffer, {caption: text});
     }
 
     public async sendFilterButtons(chatId: string) {

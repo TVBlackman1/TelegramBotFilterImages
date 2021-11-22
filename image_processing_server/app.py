@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from controllers.filterPicker import pick_filter
 from middleware.image_preprocessing import ImagePreprocessing
 # import cv2 as cv
 import cv2.cv2 as cv
@@ -15,9 +16,10 @@ app.wsgi_app = ImagePreprocessing(app.wsgi_app)
 @app.route('/api/process', methods=['POST'])
 def process():
     img = request.environ['img']
-    # request.json['options']['filter']
-    newImg = blur(img)
-    img_buff = cv.imencode('.png', newImg)[1]
+    filter_number = request.environ['filter_number']
+    filter = pick_filter(filter_number)
+    new_img = filter(img)
+    img_buff = cv.imencode('.png', new_img)[1]
     img_buff_arr = img_buff.tolist()
 
     return jsonify({

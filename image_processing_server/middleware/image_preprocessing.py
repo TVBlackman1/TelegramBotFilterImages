@@ -12,9 +12,14 @@ class ImagePreprocessing:
     def __call__(self, environ, start_response):
         request = Request(environ)
 
+    def __call__(self, environ, start_response):
+        request = Request(environ)
+
         data = request.json
+        filter_number = data['filterName']
         inp = np.asarray(data['image']['data'], dtype=np.uint8)
         img = cv.imdecode(inp, cv.IMREAD_COLOR)
         environ['img'] = img
+        environ['filter_number'] = filter_number
 
         return self.app(environ, start_response)

@@ -9,9 +9,9 @@ const replies = {
     },
     user: {
         pickFilter: {
-            blur: 'Смазать',
-            lighter: 'Яркость +',
-            darker: 'Яркость -'
+            blur: '1. Смазать',
+            darker: '2. Яркость -',
+            lighter: '3. Яркость +',
         },
     }
 }

@@ -1,5 +1,6 @@
 import {Stream} from "stream";
 import * as fs from "fs";
+// import * as Buffer from "buffer";
 
 export async function stream2buffer(stream: Stream): Promise<Buffer> {
 
@@ -16,4 +17,9 @@ export async function stream2buffer(stream: Stream): Promise<Buffer> {
 
 export async function buffer2file(path: string, buffer: Buffer) {
     fs.createWriteStream(path).write(buffer);
+}
+
+export async function file2buffer(path: string) {
+    const data = fs.readFileSync(path);
+    return Buffer.from(data);
 }

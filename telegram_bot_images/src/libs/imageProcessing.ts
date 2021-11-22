@@ -2,13 +2,14 @@ import * as needle from "needle";
 import config from 'src/config'
 import {loggerProduction} from "./logger";
 
-export async function process(imageBuff: Buffer): Promise<Buffer | false> {
+export async function imageProcess(imageBuff: Buffer, filterName: number): Promise<Buffer | false> {
     const host = config.urn.imageProcessing;
     const api = config.uri.imageProcessing.process;
     const url = host + api;
 
     const data = {
         image: imageBuff,
+        filterName,
     }
     const options = {
         json: true,
