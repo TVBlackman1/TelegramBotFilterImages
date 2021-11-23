@@ -1,5 +1,12 @@
 version: "3.9"
 services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=telegram_bot
+    ports:
+      - "${MYSQL_PORT}:3306"
   telegram_bot:
     build:
       context: telegram_bot_images
@@ -10,7 +17,7 @@ services:
       - NODE_ENV=development
       - MYSQL_PASS=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_HOST=db
+      - MYSQL_HOST=host.docker.internal
     depends_on:
       - db
   image_processing:
@@ -21,10 +28,3 @@ services:
       - PORT=${PYTHON_PORT}
     ports:
       - "${PYTHON_PORT}:${PYTHON_PORT}"
-  db:
-    image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=telegram_bot
-    ports:
-      - "${MYSQL_PORT}:3306"

@@ -1,6 +1,8 @@
 import knexfile from '../knexfile';
 import {loggerProduction} from "./logger";
 
+console.log(knexfile.connection)
+
 const knex = require('knex')({
     client: knexfile.client,
     connection: knexfile.connection,
@@ -17,7 +19,7 @@ const knex = require('knex')({
             })
         }
     },
-}, () => {});
+}, () => {})
 
 setInterval(async () => {
     await knex.raw('SELECT * from users limit 1;');
