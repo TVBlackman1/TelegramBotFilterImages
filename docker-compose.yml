@@ -2,29 +2,39 @@ version: "3.9"
 services:
   db:
     image: mysql:5.7
+    container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=telegram_bot
-    ports:
-      - "${MYSQL_PORT}:3306"
+#  telegram_migration:
+#    build:
+#      context: telegram_bot_images
+#      dockerfile: Dockerfile
+#    environment:
+#      - PYTHON_HOST=python:${PYTHON_PORT}
+#      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+#      - NODE_ENV=development
+#      - MYSQL_PASS=${MYSQL_ROOT_PASSWORD}
+#      - MYSQL_PORT=${MYSQL_PORT}
+#      - MYSQL_HOST=mysql
+#    command:
+#      - sleep 5 && npm run migration
   telegram_bot:
+    container_name: tg
     build:
       context: telegram_bot_images
       dockerfile: Dockerfile
     environment:
-      - PYTHON_HOST=image_processing:${PYTHON_PORT}
+      - PYTHON_HOST=python:${PYTHON_PORT}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
       - NODE_ENV=development
       - MYSQL_PASS=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PORT=${MYSQL_PORT}
-      - MYSQL_HOST=host.docker.internal
-    depends_on:
-      - db
+      - MYSQL_HOST=mysql
   image_processing:
+    container_name: python
     build:
       context: image_processing_server
       dockerfile: Dockerfile
     environment:
       - PORT=${PYTHON_PORT}
-    ports:
-      - "${PYTHON_PORT}:${PYTHON_PORT}"
