@@ -70,11 +70,8 @@ export class RequestHandler {
         const keys = Object.keys(replies.user.pickFilter)
         console.log(text, num)
         if (isNaN(num) || num < 1 || num > keys.length) {
-            // return await this.sender.sendFilterButtons(chatId);
             return;
         }
-
-
         const user = await storageManager.user.getByChatId(chatId);
         if (!user) {
             return await this.sender.sendWelcome(chatId);
@@ -86,15 +83,5 @@ export class RequestHandler {
             return await this.sender.sendServerError(chatId);
         }
         return await this.sender.sendPhoto(chatId, resultBuffer);
-
-
-
-
-        // loggerProduction.info(`Request from chat:${chatId}`);
-        // const res = await storageManager.user.getByChatId(chatId);
-        // if (!res) {
-        //     await storageManager.user.addUser({chatId})
-        // }
-        // await this.sender.sendRequest(chatId);
     }
 }

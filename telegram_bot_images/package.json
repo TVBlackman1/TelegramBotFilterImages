@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && NODE_PATH=./ node src/index.js",
     "build": "tsc",
-    "migrations": "export MYSQL_PORT=13338 && MYSQL_HOST='host.docker.internal' knex migrate:latest --knexfile=./src/knexfile.ts",
-    "migrations_down": "MYSQL_PORT=13338 && MYSQL_HOST='host.docker.internal' && knex migrate:down --knexfile=./src/knexfile.ts"
+    "migrations": "knex migrate:latest --knexfile=./src/knexfile.ts",
+    "migrations_down": "knex migrate:down --knexfile=./src/knexfile.ts"
   },
   "author": "tvblackman1 <vbif.misha2012@yandex.ru>",
   "license": "MIT",
